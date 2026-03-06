@@ -105,7 +105,7 @@ export default function RegisterScreen() {
                         </Pressable>
 
                         <Link href="/login" asChild>
-                            <Pressable style={styles.linkButton}>
+                            <Pressable style={StyleSheet.flatten(styles.linkButton)}>
                                 <Text style={styles.linkText}>Já tem uma conta? <Text style={styles.linkTextBold}>Entre</Text></Text>
                             </Pressable>
                         </Link>

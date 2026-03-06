@@ -1,32 +1,11 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import React from 'react';
-import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import FeaturesList from '../components/FeaturesList';
 import Theme from '../constants/Theme';
 
 export default function WelcomeScreen() {
-    const features = [
-        {
-            icon: '💬',
-            title: 'Mensagens em tempo real',
-            description: 'Envio rápido e instantâneo.',
-        },
-        {
-            icon: '👥',
-            title: 'Crie comunidades',
-            description: 'Conecte pessoas e grupos.',
-        },
-        {
-            icon: '🔐',
-            title: 'Chat seguro',
-            description: 'Conversas protegidas e privadas.',
-        },
-        {
-            icon: '⚡',
-            title: 'Conexão instantânea',
-            description: 'Conecte-se com o mundo.',
-        },
-    ];
 
     const shadowStyle = Platform.select({
         web: { boxShadow: `0px 4px 10px rgba(47, 107, 255, 0.3)` },
@@ -66,29 +45,20 @@ export default function WelcomeScreen() {
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 1 }}
                         >
-                            <Text style={{ fontSize: 40 }}>🚀</Text>
+                            <Image
+                                source={require('../../assets/images/logoOfic.png')}
+                                style={{ width: 70, height: 70, resizeMode: 'contain' }}
+                            />
                         </LinearGradient>
                         <Text style={styles.logoText}>NEXORA</Text>
                         <Text style={styles.subtitle}>Bem-vindo ao futuro do chat</Text>
                     </View>
 
-                    <View style={styles.features}>
-                        {features.map((feature, index) => (
-                            <View key={index} style={styles.card}>
-                                <View style={styles.iconCircle}>
-                                    <Text style={styles.icon}>{feature.icon}</Text>
-                                </View>
-                                <View style={styles.featureTextContainer}>
-                                    <Text style={styles.title}>{feature.title}</Text>
-                                    <Text style={styles.text}>{feature.description}</Text>
-                                </View>
-                            </View>
-                        ))}
-                    </View>
+                    <FeaturesList />
 
                     <View style={styles.buttonContainer}>
                         <Link href="/login" asChild>
-                            <TouchableOpacity style={[styles.loginButton, shadowStyle]}>
+                            <TouchableOpacity style={StyleSheet.flatten([styles.loginButton, shadowStyle])}>
                                 <LinearGradient
                                     colors={Theme.gradients.button}
                                     style={styles.gradientButton}
@@ -101,7 +71,7 @@ export default function WelcomeScreen() {
                         </Link>
 
                         <Link href="/register" asChild>
-                            <TouchableOpacity style={[styles.registerButton, accentShadowStyle]}>
+                            <TouchableOpacity style={StyleSheet.flatten([styles.registerButton, accentShadowStyle])}>
                                 <Text style={styles.buttonText}>Criar Conta</Text>
                             </TouchableOpacity>
                         </Link>
@@ -161,45 +131,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: '600',
     },
-    features: {
-        width: '100%',
-        marginBottom: 48,
-    },
-    card: {
-        backgroundColor: Theme.colors.card,
-        padding: 16,
-        borderRadius: 20,
-        marginBottom: 16,
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.05)',
-    },
-    iconCircle: {
-        width: 48,
-        height: 48,
-        borderRadius: 14,
-        backgroundColor: 'rgba(47, 107, 255, 0.1)',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 16,
-    },
-    icon: {
-        fontSize: 24,
-    },
-    featureTextContainer: {
-        flex: 1,
-    },
-    title: {
-        color: Theme.colors.text,
-        fontSize: 17,
-        fontWeight: '700',
-    },
-    text: {
-        color: Theme.colors.placeholder,
-        fontSize: 14,
-        marginTop: 2,
-    },
+
     buttonContainer: {
         width: '100%',
         gap: 16,
