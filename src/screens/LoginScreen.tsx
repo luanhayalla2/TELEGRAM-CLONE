@@ -32,7 +32,7 @@ const LoginScreen = () => {
         try {
             setError('');
             await login(email, password);
-            router.replace('/chat');
+            router.replace('/Main');
         } catch (err: any) {
             setError(translateError(err));
             console.error('Erro no login:', err);

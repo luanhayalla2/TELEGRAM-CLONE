@@ -1,28 +1,78 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 import Theme from '../constants/Theme';
+
+type MessageStatus = 'sending' | 'sent' | 'delivered' | 'read';
 
 interface MessageBubbleProps {
     message: string;
     isMe: boolean;
     time: string;
+    status?: MessageStatus;
 }
 
-export default function MessageBubble({ message, isMe, time }: MessageBubbleProps) {
+function StatusIcon({ status }: { status: MessageStatus }) {
+    if (status === 'sending') {
+        return <Text style={styles.statusIcon}>🕐</Text>;
+    }
+    if (status === 'sent') {
+        return <Text style={styles.statusIcon}>✓</Text>;
+    }
+    if (status === 'delivered') {
+        return <Text style={styles.statusIcon}>✓✓</Text>;
+    }
+    if (status === 'read') {
+        return <Text style={[styles.statusIcon, styles.statusRead]}>✓✓</Text>;
+    }
+    return null;
+}
+
+export default function MessageBubble({ message, isMe, time, status = 'delivered' }: MessageBubbleProps) {
+    const fadeAnim = useRef(new Animated.Value(0)).current;
+    const slideAnim = useRef(new Animated.Value(isMe ? 20 : -20)).current;
+
+    useEffect(() => {
+        Animated.parallel([
+            Animated.timing(fadeAnim, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+            }),
+            Animated.timing(slideAnim, {
+                toValue: 0,
+                duration: 200,
+                useNativeDriver: true,
+            }),
+        ]).start();
+    }, []);
+
     return (
-        <View style={[styles.container, isMe ? styles.meContainer : styles.otherContainer]}>
+        <Animated.View
+            style={[
+                styles.container,
+                isMe ? styles.meContainer : styles.otherContainer,
+                { opacity: fadeAnim, transform: [{ translateX: slideAnim }] }
+            ]}
+        >
             <View style={[styles.bubble, isMe ? styles.meBubble : styles.otherBubble]}>
-                <Text style={styles.messageText}>{message}</Text>
-                <Text style={[styles.timeText, isMe ? styles.meTime : styles.otherTime]}>{time}</Text>
+                <Text style={[styles.messageText, !isMe && styles.otherMessageText]}>
+                    {message}
+                </Text>
+                <View style={styles.meta}>
+                    <Text style={[styles.timeText, isMe ? styles.meTime : styles.otherTime]}>
+                        {time}
+                    </Text>
+                    {isMe && <StatusIcon status={status} />}
+                </View>
             </View>
-        </View>
+        </Animated.View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 4,
-        paddingHorizontal: 16,
+        marginVertical: 2,
+        paddingHorizontal: 12,
         flexDirection: 'row',
         width: '100%',
     },
@@ -33,12 +83,12 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     bubble: {
-        maxWidth: '80%',
+        maxWidth: '78%',
         minWidth: 80,
-        paddingHorizontal: 16,
-        paddingTop: 10,
-        paddingBottom: 20,
-        borderRadius: 20,
+        paddingHorizontal: 14,
+        paddingTop: 8,
+        paddingBottom: 6,
+        borderRadius: 18,
     },
     meBubble: {
         backgroundColor: Theme.colors.primary,
@@ -49,20 +99,34 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 4,
     },
     messageText: {
+        color: '#FFFFFF',
+        fontSize: 15,
+        lineHeight: 21,
+    },
+    otherMessageText: {
         color: Theme.colors.text,
-        fontSize: 16,
-        lineHeight: 22,
+    },
+    meta: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        marginTop: 2,
+        gap: 3,
     },
     timeText: {
         fontSize: 11,
-        position: 'absolute',
-        bottom: 4,
-        right: 12,
     },
     meTime: {
-        color: 'rgba(255,255,255,0.7)',
+        color: 'rgba(255,255,255,0.65)',
     },
     otherTime: {
         color: Theme.colors.placeholder,
+    },
+    statusIcon: {
+        fontSize: 11,
+        color: 'rgba(255,255,255,0.65)',
+    },
+    statusRead: {
+        color: '#60A5FA',
     },
 });

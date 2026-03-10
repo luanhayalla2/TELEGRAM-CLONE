@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import Theme from '../constants/Theme';
-import ChatScreens from '../screens/ChatScreens';
+import MainTabs from './MainTabs';
 import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import RegisterScreen from '../screens/RegisterScreen';
@@ -40,9 +40,9 @@ export default function AppNavigator() {
                 options={{ title: 'NEXORA' }}
             />
             <Stack.Screen
-                name="Chat"
-                component={ChatScreens}
-                options={{ title: 'NEXORA' }}
+                name="Main"
+                component={MainTabs}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="Profile"

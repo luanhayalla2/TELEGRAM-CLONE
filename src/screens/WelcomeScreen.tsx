@@ -6,7 +6,6 @@ import FeaturesList from '../components/FeaturesList';
 import Theme from '../constants/Theme';
 
 export default function WelcomeScreen() {
-
     const shadowStyle = Platform.select({
         web: { boxShadow: `0px 4px 10px rgba(47, 107, 255, 0.3)` },
         default: {
@@ -47,7 +46,8 @@ export default function WelcomeScreen() {
                         >
                             <Image
                                 source={require('../../assets/images/logoOfic.png')}
-                                style={{ width: 70, height: 70, resizeMode: 'contain' }}
+                                resizeMode="contain"
+                                style={{ width: 70, height: 70 }}
                             />
                         </LinearGradient>
                         <Text style={styles.logoText}>NEXORA</Text>
