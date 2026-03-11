@@ -45,7 +45,11 @@ export default function Avatar({ imageUrl, name, size = 50, isOnline }: AvatarPr
         <View style={{ width: size, height: size }}>
             <View style={[styles.container, { width: size, height: size, borderRadius: size / 2, backgroundColor: bgColor }]}>
                 {imageUrl ? (
-                    <Image source={{ uri: imageUrl }} style={[styles.image, { borderRadius: size / 2 }]} />
+                    <Image 
+                        source={{ uri: imageUrl }} 
+                        style={[styles.image, { borderRadius: size / 2 }]} 
+                        resizeMode="cover"
+                    />
                 ) : (
                     <Text style={[styles.initials, { fontSize }]}>{getInitials(name)}</Text>
                 )}

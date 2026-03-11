@@ -23,6 +23,8 @@ const LoginScreen = () => {
                 return 'E-mail inválido.';
             case 'auth/user-disabled':
                 return 'Este usuário foi desativado.';
+            case 'auth/too-many-requests':
+                return 'Muitas tentativas malsucedidas. Tente mais tarde.';
             default:
                 return error.message || 'Ocorreu um erro ao fazer login.';
         }

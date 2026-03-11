@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Theme from '../constants/Theme';
@@ -43,11 +44,25 @@ export default function ChatItem({
     onLongPress,
 }: ChatItemProps) {
 
-    const typeLabel = type === 'group'
-        ? `👥 ${memberCount ?? ''} membros`
-        : type === 'channel'
-            ? `📢 ${memberCount ?? ''} inscritos`
-            : null;
+    const renderTypeInfo = () => {
+        if (type === 'group') {
+            return (
+                <View style={styles.typeRow}>
+                    <Ionicons name="people" size={14} color={Theme.colors.placeholder} />
+                    <Text style={styles.typeLabel}>{memberCount ?? ''} membros</Text>
+                </View>
+            );
+        }
+        if (type === 'channel') {
+            return (
+                <View style={styles.typeRow}>
+                    <Ionicons name="megaphone" size={14} color={Theme.colors.placeholder} />
+                    <Text style={styles.typeLabel}>{memberCount ?? ''} inscritos</Text>
+                </View>
+            );
+        }
+        return null;
+    };
 
     return (
         <TouchableOpacity style={styles.container} onPress={onPress} onLongPress={onLongPress}>
@@ -56,7 +71,7 @@ export default function ChatItem({
             <View style={styles.content}>
                 <View style={styles.header}>
                     <View style={styles.nameRow}>
-                        {isPinned && <Text style={styles.pinIcon}>📌</Text>}
+                        {isPinned && <Ionicons name="pin" size={14} color={Theme.colors.placeholder} style={styles.pinIcon} />}
                         <Text style={styles.name} numberOfLines={1}>{name}</Text>
                     </View>
                     <Text style={[styles.time, unreadCount > 0 && !isMuted && styles.timeUnread]}>
@@ -64,9 +79,7 @@ export default function ChatItem({
                     </Text>
                 </View>
 
-                {typeLabel && (
-                    <Text style={styles.typeLabel}>{typeLabel}</Text>
-                )}
+                {renderTypeInfo()}
 
                 <View style={styles.footer}>
                     <Text
@@ -77,7 +90,7 @@ export default function ChatItem({
                     </Text>
 
                     <View style={styles.badgeRow}>
-                        {isMuted && <Text style={styles.muteIcon}>🔇</Text>}
+                        {isMuted && <Ionicons name="notifications-off" size={12} color={Theme.colors.placeholder} style={{ opacity: 0.6 }} />}
                         {unreadCount > 0 && (
                             <View style={[styles.badge, isMuted && styles.badgeMuted]}>
                                 <Text style={styles.badgeText}>{unreadCount > 99 ? '99+' : unreadCount}</Text>
@@ -141,6 +154,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    typeRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+        marginBottom: 2,
     },
     lastMessage: {
         color: Theme.colors.placeholder,

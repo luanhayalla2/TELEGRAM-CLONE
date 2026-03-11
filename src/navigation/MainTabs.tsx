@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import React, { ComponentProps } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Theme from '../constants/Theme';
 import CallsScreen from '../screens/CallsScreen';
@@ -9,10 +10,19 @@ import StatusScreen from '../screens/StatusScreen';
 
 const Tab = createBottomTabNavigator();
 
-function TabIcon({ icon, label, focused }: { icon: string; label: string; focused: boolean }) {
+type IconName = ComponentProps<typeof Ionicons>['name'];
+
+function TabIcon({ name, label, focused }: { name: IconName; label: string; focused: boolean }) {
+    const iconName = focused ? name : `${name}-outline` as any;
+    
     return (
         <View style={styles.tabIconContainer}>
-            <Text style={[styles.tabIcon, focused && styles.tabIconFocused]}>{icon}</Text>
+            <Ionicons 
+                name={iconName} 
+                size={24} 
+                color={focused ? Theme.colors.primary : Theme.colors.placeholder} 
+                style={styles.tabIcon}
+            />
             <Text style={[styles.tabLabel, focused && styles.tabLabelFocused]}>{label}</Text>
         </View>
     );
@@ -35,8 +45,8 @@ export default function MainTabs() {
                 tabBarStyle: {
                     backgroundColor: Theme.colors.card,
                     borderTopColor: Theme.colors.border,
-                    height: 60,
-                    paddingBottom: 8,
+                    height: 65,
+                    paddingBottom: 10,
                 },
                 tabBarShowLabel: false,
                 headerShadowVisible: false,
@@ -47,8 +57,8 @@ export default function MainTabs() {
                 component={ChatScreens}
                 options={{
                     title: 'CONVERSAS',
-                    tabBarIcon: ({ focused }) => <TabIcon icon="💬" label="Chats" focused={focused} />,
-                    headerShown: false, // ChatScreens handles its own header
+                    tabBarIcon: ({ focused }) => <TabIcon name="chatbubbles" label="Chats" focused={focused} />,
+                    headerShown: false,
                 }}
             />
             <Tab.Screen
@@ -56,7 +66,7 @@ export default function MainTabs() {
                 component={StatusScreen}
                 options={{
                     title: 'STATUS',
-                    tabBarIcon: ({ focused }) => <TabIcon icon="📡" label="Status" focused={focused} />,
+                    tabBarIcon: ({ focused }) => <TabIcon name="aperture" label="Status" focused={focused} />,
                 }}
             />
             <Tab.Screen
@@ -64,7 +74,7 @@ export default function MainTabs() {
                 component={CommunityScreen}
                 options={{
                     title: 'COMUNIDADES',
-                    tabBarIcon: ({ focused }) => <TabIcon icon="🏘️" label="Comunidades" focused={focused} />,
+                    tabBarIcon: ({ focused }) => <TabIcon name="people" label="Comunidades" focused={focused} />,
                 }}
             />
             <Tab.Screen
@@ -72,7 +82,7 @@ export default function MainTabs() {
                 component={CallsScreen}
                 options={{
                     title: 'LIGAÇÕES',
-                    tabBarIcon: ({ focused }) => <TabIcon icon="📞" label="Chamadas" focused={focused} />,
+                    tabBarIcon: ({ focused }) => <TabIcon name="call" label="Chamadas" focused={focused} />,
                 }}
             />
         </Tab.Navigator>
@@ -86,16 +96,12 @@ const styles = StyleSheet.create({
         paddingTop: 8,
     },
     tabIcon: {
-        fontSize: 20,
-        opacity: 0.6,
-    },
-    tabIconFocused: {
-        opacity: 1,
+        marginBottom: 2,
     },
     tabLabel: {
         fontSize: 10,
         color: Theme.colors.placeholder,
-        marginTop: 4,
+        marginTop: 2,
         fontWeight: '600',
     },
     tabLabelFocused: {

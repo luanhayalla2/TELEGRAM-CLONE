@@ -1,9 +1,12 @@
-import React, { useEffect, useRef } from "react";
-import { Animated, StyleSheet, Text, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import React, { ComponentProps, useEffect, useRef } from "react";
+import { Animated, Platform, StyleSheet, Text, View } from "react-native";
 import Theme from "../constants/Theme";
 
+type IconName = ComponentProps<typeof Ionicons>['name'];
+
 interface FeatureCardProps {
-    icon: string;
+    icon: IconName;
     title: string;
     description: string;
     delay?: number;
@@ -24,13 +27,13 @@ export default function FeatureCard({
                 toValue: 1,
                 duration: 600,
                 delay,
-                useNativeDriver: true,
+                useNativeDriver: Platform.OS !== 'web',
             }),
             Animated.timing(translateY, {
                 toValue: 0,
                 duration: 600,
                 delay,
-                useNativeDriver: true,
+                useNativeDriver: Platform.OS !== 'web',
             }),
         ]).start();
     }, [delay, fadeAnim, translateY]);
@@ -42,7 +45,9 @@ export default function FeatureCard({
                 { opacity: fadeAnim, transform: [{ translateY }] },
             ]}
         >
-            <Text style={styles.icon}>{icon}</Text>
+            <View style={styles.iconContainer}>
+                <Ionicons name={icon} size={28} color={Theme.colors.primary} />
+            </View>
             <View style={styles.textContainer}>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.description}>{description}</Text>
@@ -62,8 +67,13 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'rgba(255, 255, 255, 0.05)',
     },
-    icon: {
-        fontSize: 28,
+    iconContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 12,
+        backgroundColor: 'rgba(47, 107, 255, 0.1)',
+        justifyContent: 'center',
+        alignItems: 'center',
         marginRight: 16,
     },
     textContainer: {

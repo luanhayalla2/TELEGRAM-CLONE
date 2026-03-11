@@ -1,5 +1,6 @@
+import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, Platform, StyleSheet, Text, View } from 'react-native';
 import Theme from '../constants/Theme';
 
 type MessageStatus = 'sending' | 'sent' | 'delivered' | 'read';
@@ -13,16 +14,16 @@ interface MessageBubbleProps {
 
 function StatusIcon({ status }: { status: MessageStatus }) {
     if (status === 'sending') {
-        return <Text style={styles.statusIcon}>🕐</Text>;
+        return <Ionicons name="time-outline" size={12} color="rgba(255,255,255,0.65)" />;
     }
     if (status === 'sent') {
-        return <Text style={styles.statusIcon}>✓</Text>;
+        return <Ionicons name="checkmark" size={14} color="rgba(255,255,255,0.65)" />;
     }
     if (status === 'delivered') {
-        return <Text style={styles.statusIcon}>✓✓</Text>;
+        return <Ionicons name="checkmark-done" size={14} color="rgba(255,255,255,0.65)" />;
     }
     if (status === 'read') {
-        return <Text style={[styles.statusIcon, styles.statusRead]}>✓✓</Text>;
+        return <Ionicons name="checkmark-done" size={14} color="#60A5FA" />;
     }
     return null;
 }
@@ -36,12 +37,12 @@ export default function MessageBubble({ message, isMe, time, status = 'delivered
             Animated.timing(fadeAnim, {
                 toValue: 1,
                 duration: 200,
-                useNativeDriver: true,
+                useNativeDriver: Platform.OS !== 'web',
             }),
             Animated.timing(slideAnim, {
                 toValue: 0,
                 duration: 200,
-                useNativeDriver: true,
+                useNativeDriver: Platform.OS !== 'web',
             }),
         ]).start();
     }, []);

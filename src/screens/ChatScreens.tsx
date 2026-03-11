@@ -168,11 +168,16 @@ const menuStyles = StyleSheet.create({
         backgroundColor: Theme.colors.card,
         borderRadius: 14,
         minWidth: 220,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.3,
-        shadowRadius: 16,
-        elevation: 10,
+        ...Platform.select({
+            web: { boxShadow: '0px 8px 16px rgba(0,0,0,0.3)' },
+            default: {
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 8 },
+                shadowOpacity: 0.3,
+                shadowRadius: 16,
+                elevation: 10,
+            }
+        }),
         overflow: 'hidden',
     },
     option: {
@@ -398,7 +403,7 @@ export default function ChatScreens() {
                     {/* Search bar */}
                     {showSearch && (
                         <View style={styles.searchBar}>
-                            <Text style={styles.searchIcon}>🔍</Text>
+                        <Ionicons name="search-outline" size={16} color={Theme.colors.placeholder} />
                             <TextInput
                                 style={styles.searchInput}
                                 value={searchQuery}
@@ -409,7 +414,7 @@ export default function ChatScreens() {
                             />
                             {searchQuery.length > 0 && (
                                 <TouchableOpacity onPress={() => setSearchQuery('')}>
-                                    <Text style={styles.searchClear}>✕</Text>
+                                    <Ionicons name="close-circle" size={20} color={Theme.colors.placeholder} />
                                 </TouchableOpacity>
                             )}
                         </View>
@@ -498,7 +503,7 @@ export default function ChatScreens() {
                             <View style={styles.chatHeader}>
                                 {isMobile && (
                                     <TouchableOpacity onPress={() => setActiveChat(null)} style={styles.backBtn}>
-                                        <Text style={styles.backBtnText}>←</Text>
+                                        <Ionicons name="arrow-back" size={24} color={Theme.colors.primary} />
                                     </TouchableOpacity>
                                 )}
 
@@ -518,13 +523,13 @@ export default function ChatScreens() {
 
                                 <View style={styles.chatHeaderActions}>
                                     <TouchableOpacity style={styles.headerBtn} onPress={handleVoiceCall}>
-                                        <Text style={styles.headerBtnText}>📞</Text>
+                                        <Ionicons name="call-outline" size={22} color={Theme.colors.text} />
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.headerBtn} onPress={handleVideoCall}>
-                                        <Text style={styles.headerBtnText}>🎥</Text>
+                                        <Ionicons name="videocam-outline" size={22} color={Theme.colors.text} />
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.headerBtn} onPress={() => setShowOptions(true)}>
-                                        <Text style={styles.headerBtnText}>⋮</Text>
+                                        <Ionicons name="ellipsis-vertical" size={22} color={Theme.colors.text} />
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -550,7 +555,7 @@ export default function ChatScreens() {
                         </>
                     ) : (
                         <View style={styles.emptyChat}>
-                            <Text style={styles.emptyChatIcon}>💬</Text>
+                            <Ionicons name="chatbubbles-outline" size={80} color={Theme.colors.primary} style={{ opacity: 0.2, marginBottom: 20 }} />
                             <Text style={styles.emptyChatTitle}>Bem-vindo ao NEXORA</Text>
                             <Text style={styles.emptyChatSub}>Selecione uma conversa para começar</Text>
                         </View>

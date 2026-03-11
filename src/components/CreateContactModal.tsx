@@ -83,11 +83,16 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.colors.card,
         borderRadius: 20,
         padding: 24,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.3,
-        shadowRadius: 20,
-        elevation: 10,
+        ...Platform.select({
+            web: { boxShadow: '0px 10px 20px rgba(0,0,0,0.3)' },
+            default: {
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 10 },
+                shadowOpacity: 0.3,
+                shadowRadius: 20,
+                elevation: 10,
+            }
+        }),
     },
     title: {
         color: Theme.colors.primary,
